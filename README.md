@@ -1,5 +1,6 @@
 # UnitaryQuinticEquationCalculate
 unitary Quintic Equation Calculate  一元五次方程计算
+一元高次方程计算中变量 n次 筛选区间 结果精度 均可拓展
 
 
 
