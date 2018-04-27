@@ -5,10 +5,21 @@
 //  Created by CityMedia on 2018/4/27.
 //  Copyright © 2018年 CityMedia. All rights reserved.
 //
-
+/**
+  测试公式  x^5 + 10x^3 + 20x - 4 = 0
+ 
+ 精确度级别 耗时(/s)    比例         
+ * 10^7  63.546081            0.196209
+ * 10^6   6.154949   10.324   0.196209
+ * 10^5   0.634656   9.698    0.196205
+ * 10^4   0.070527   9        0.196250
+ * 10^3   0.012508   5.8      0.196500
+ * 10^2   0.005212   2.4      0.195000
+ */
 #import "TestViewController.h"
 #define DefNumber_min -100
 #define DefNumber_max 100
+#define DefPrecision 10000
 #import "CommonTool.h"
 
 @interface TestViewController ()
@@ -65,7 +76,7 @@
 }
 - (void)kFilterMoreWithBegin:(double)begin andEnd:(double)end withGranularity:(NSInteger)gra{
     if (!gra || gra <= 0) {
-        gra = 10000;
+        gra = DefPrecision;
     }
     NSMutableArray * mutArr5 = [self kDichotomyWith:begin andEnd:end withGranularity:0 withNumber:self.textField_x5.text.doubleValue withN:5];
     NSMutableArray * mutArr4 = [self kDichotomyWith:begin andEnd:end withGranularity:0 withNumber:self.textField_x4.text.doubleValue withN:4];
@@ -99,6 +110,7 @@
             self.labLast.text = [self.labLast.text stringByAppendingString:@"x:"];
             self.labLast.text = [self.labLast.text stringByAppendingString:[NSString stringWithFormat:@"%f",(bb + bbEnd)/2]];
             self.labLast.text = [self.labLast.text stringByAppendingString:@" || "];
+            
             [self kShowLabCon];
         }else if (start > standNum && next < standNum){
             flag = 0;
@@ -186,7 +198,7 @@
 // 二分法 精细化 Dichotomy granularity
 - (NSMutableArray *)kDichotomyWith:(double)begin andEnd:(double)end withGranularity:(NSInteger)gra withNumber:(float)number withN:(NSInteger)n{
     if (!gra || gra <= 0) {
-        gra = 10000;
+        gra = DefPrecision;
     }
     
     NSMutableArray * mutArr = [NSMutableArray array];
@@ -238,6 +250,25 @@
 }
 
 - (BOOL)veritifyAllInfoZero{
+    if (self.textField_x0.text.length == 0) {
+        self.textField_x0.text = @"0";
+    }
+    if (self.textField_x1.text.length == 0) {
+        self.textField_x1.text = @"0";
+    }
+    if (self.textField_x2.text.length == 0) {
+        self.textField_x2.text = @"0";
+    }
+    if (self.textField_x3.text.length == 0) {
+        self.textField_x3.text = @"0";
+    }
+    if (self.textField_x4.text.length == 0) {
+        self.textField_x4.text = @"0";
+    }
+    if (self.textField_x5.text.length == 0) {
+        self.textField_x5.text = @"0";
+    }
+    
     if ([self.textField_x0.text isEqualToString:@"0"] && [self.textField_x1.text isEqualToString:@"0"] && [self.textField_x2.text isEqualToString:@"0"] && [self.textField_x3.text isEqualToString:@"0"] && [self.textField_x4.text isEqualToString:@"0"] && [self.textField_x5.text isEqualToString:@"0"] ) {
         return YES;
         
