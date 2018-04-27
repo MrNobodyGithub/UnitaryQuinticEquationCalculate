@@ -21,10 +21,13 @@
 @property (weak, nonatomic) IBOutlet UITextField *textField_x0;
 
 @property (weak, nonatomic) IBOutlet UILabel *labLast;
+@property (weak, nonatomic) IBOutlet UILabel *labTimeCon;
 
 @end
 
-@implementation TestViewController
+@implementation TestViewController{
+    NSTimeInterval flagTimeInterval;
+}
 - (void)baseConfiguration{
     self.labLast.numberOfLines = 0;
 }
@@ -35,12 +38,16 @@
    
 }
 - (IBAction)btnActionBeginCal:(id)sender {
+    NSDate * date = [NSDate date];
+    NSTimeInterval  timeInt = [date timeIntervalSince1970];
+    flagTimeInterval = timeInt;
+    NSLog(@"-- -time begin %f---",flagTimeInterval);
+    [self kShowLabCon];
     BOOL verify = [self veritifyAllInfoZero];
     if (verify) {
         [CommonTool AlertViewM:@"请录入数据"];
         return;
     }
-   
     
     self.labLast.text = @"计算结果为:";
     NSMutableArray * mutArr5 = [self kxnWithNumber:self.textField_x5.text.floatValue WithN:5];
@@ -92,6 +99,7 @@
             self.labLast.text = [self.labLast.text stringByAppendingString:@"x:"];
             self.labLast.text = [self.labLast.text stringByAppendingString:[NSString stringWithFormat:@"%f",(bb + bbEnd)/2]];
             self.labLast.text = [self.labLast.text stringByAppendingString:@" || "];
+            [self kShowLabCon];
         }else if (start > standNum && next < standNum){
             flag = 0;
             NSLog(@"--- 趋势 - ---");
@@ -106,6 +114,7 @@
             self.labLast.text = [self.labLast.text stringByAppendingString:@"x:"];
             self.labLast.text = [self.labLast.text stringByAppendingString:[NSString stringWithFormat:@"%f",(bb + bbEnd)/2]];
             self.labLast.text = [self.labLast.text stringByAppendingString:@" || "];
+            [self kShowLabCon];
         }else if(start == standNum){
             flag = 0;
             NSLog(@"--- int find ---");
@@ -117,6 +126,7 @@
             self.labLast.text = [self.labLast.text stringByAppendingString:@"\n"];
             self.labLast.text = [self.labLast.text stringByAppendingString:@"x:"];
             self.labLast.text = [self.labLast.text stringByAppendingString:[NSString stringWithFormat:@"%f",start]];
+            [self kShowLabCon];
         }else{
             flag ++;
         }
@@ -158,8 +168,8 @@
             self.labLast.text = [self.labLast.text stringByAppendingString:[NSString stringWithFormat:@"%d",i + DefNumber_min]];
             
             self.labLast.text = [self.labLast.text stringByAppendingString:@" || "];
-
-            
+ 
+            [self kShowLabCon];
             
         }else{
             flag ++;
@@ -233,5 +243,14 @@
         
     }
     return NO;
+}
+
+- (void)kShowLabCon{
+    NSDate * date = [NSDate date];
+    NSTimeInterval  timeInt = [date timeIntervalSince1970];
+    NSLog(@"--- data %@ %f ---",date, timeInt);
+    NSTimeInterval dif = flagTimeInterval - timeInt;
+    NSString * str = @"耗时:";
+    self.labTimeCon.text = [str stringByAppendingString:[NSString stringWithFormat:@"%f s",-dif]];
 }
 @end
